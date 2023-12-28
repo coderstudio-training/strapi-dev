@@ -1,31 +1,8 @@
-# Dependency directories
-node_modules
-npm-debug.log
-
-# Build output
-build
-dist
-
-# Version control
-.git
-.gitignore
-
-# System Files
-.DS_Store
-*.swp
-*.swo
-Thumbs.db
-
-# Environment files
+.tmp/
+.cache/
+.git/
+build/
+node_modules/
 .env
-.env.test
-.env.*.local
-
-# Editor directories and files
-.idea
-.vscode
-*.sublime-workspace
-
-# Logs
-logs
-*.log
+data/
+backup/

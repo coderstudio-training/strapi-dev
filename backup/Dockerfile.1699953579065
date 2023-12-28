@@ -1,0 +1,23 @@
+# Use an official Node.js runtime as a parent image, compatible with ARM64
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Bundle app source inside the Docker image
+COPY . .
+
+# Build your Strapi project (only if you are using a starter or have existing project files)
+RUN npm run build
+
+# Expose the port the app runs on
+EXPOSE 1337
+
+# Run the app when the container launches
+CMD ["npm", "start"]

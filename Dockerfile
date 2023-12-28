@@ -1,20 +1,18 @@
-# Use an official Node.js runtime as a parent image
 FROM node:18-alpine
+# Installing libvips-dev for sharp Compatibility
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /opt/
+COPY package.json package-lock.json ./
+RUN npm config set fetch-retry-maxtimeout 1200000 -g && npm install
 
-# Copy package.json and package-lock.json (or yarn.lock)
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Bundle app source inside the Docker image
+WORKDIR /opt/app
 COPY . .
-
-# Expose the port Strapi runs on
+ENV PATH /opt/node_modules/.bin:$PATH
+RUN chown -R node:node /opt/app
+USER node
+RUN ["npm", "run", "build"]
 EXPOSE 1337
-
-# Start the development server using chokidar for file watching
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "develop"]
